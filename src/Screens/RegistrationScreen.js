@@ -19,9 +19,9 @@ import { SvgXml } from "react-native-svg";
 import ImagePicker from "react-native-image-picker";
 
 const uploadIcon = `
-  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="12.5" cy="12.5" r="12" fill="white" stroke="#FF6C00"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z" fill="#FF6C00"/>
+  <svg width="25" height="25" viewBox="0 0 25 25" fill="orange"  xmlns="http://www.w3.org/2000/svg">
+<circle cx="12.5" cy="12.5" r="12" fill="white" stroke="orange"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z" fill="orange"/>
 </svg>
 `;
 
@@ -35,9 +35,33 @@ export const RegistrationScreen = () => {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  // const [avatar, setAvatar] = useState(null);
+
+  // const pickImage = () => {
+  //   ImagePicker.showImagePicker(
+  //     { title: "Select Avatar", maxWidth: 300, maxHeight: 300 },
+  //     (response) => {
+  //       if (response.didCancel) {
+  //         console.log("User cancelled image picker");
+  //       } else if (response.error) {
+  //         console.log("ImagePicker Error: ", response.error);
+  //       } else {
+  //         const source = { uri: response.uri };
+  //         setAvatar(source);
+  //       }
+  //     }
+  //   );
+  // };
 
   const onLogin = () => {
-    Alert.alert("Welcome!");
+    state.length > 1
+      ? Alert.alert("Добро пожаловать!")
+      : Alert.alert("Введите ваши данные!");
   };
 
   const [fontsLoaded] = useFonts({
@@ -70,10 +94,19 @@ export const RegistrationScreen = () => {
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
               >
                 <View style={styles.avatarThumb}>
-                  <Image style={styles.userAvatar}></Image>
+                  <Image
+                    // source={require("../images/user.jpeg")}
+                    style={styles.userAvatar}
+                  ></Image>
                   <TouchableOpacity>
                     <View style={styles.userAvatarButton}>
-                      <SvgXml xml={uploadIcon} width={25} height={25} />
+                      <SvgXml
+                        xml={uploadIcon}
+                        width={25}
+                        height={25}
+                        // transform="rotate(45)"
+                        // viewBox="-12 5 25 25"
+                      />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -89,7 +122,7 @@ export const RegistrationScreen = () => {
                       onChange={() => setIsFocused(true)}
                       onBlur={() => setIsFocused(false)}
                       editable
-                      maxLength={40}
+                      maxLength={30}
                       textAlign={"left"}
                       value={state.name}
                       onChangeText={(value) =>
@@ -103,7 +136,7 @@ export const RegistrationScreen = () => {
                       onFocus={() => setIsShownKeyboard(true)}
                       style={styles.inputZone}
                       editable
-                      maxLength={40}
+                      maxLength={30}
                       keyboardType="email-address"
                       value={state.email}
                       onChangeText={(value) =>
@@ -121,7 +154,7 @@ export const RegistrationScreen = () => {
                       onFocus={() => setIsShownKeyboard(true)}
                       style={styles.inputZone}
                       editable
-                      maxLength={40}
+                      maxLength={24}
                       value={state.password}
                       onChangeText={(value) =>
                         setState((prevState) => ({
@@ -130,17 +163,25 @@ export const RegistrationScreen = () => {
                         }))
                       }
                       placeholder="Пароль"
-                      secureTextEntry="true"
+                      secureTextEntry={!showPassword}
                     ></TextInput>
+                    <View>
+                      <TouchableOpacity onPress={toggleShowPassword}>
+                        <Text style={styles.showPasswordButton}>
+                          {showPassword ? "Скрыть" : "Показать"}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.button}
                     onPress={keyboardHide}
                     onPressIn={onLogin}
                   >
-                    <Text style={styles.buttonText}>Зарегистрироваться</Text>
+                    <Text onPress={keyboardHide} style={styles.buttonText}>
+                      Зарегистрироваться
+                    </Text>
                   </TouchableOpacity>
 
                   <View style={styles.registrationButtonThumb}>
@@ -215,10 +256,13 @@ const styles = StyleSheet.create({
     left: "33%",
     width: 120,
     height: 120,
-    borderRadius: 10,
     backgroundColor: "#F6F6F6",
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    borderRadius: 20,
   },
   userAvatar: {
+    borderRadius: 20,
     width: 120,
     height: 120,
   },
@@ -254,5 +298,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#1B4371",
     marginTop: 16,
+  },
+  showPasswordButton: {
+    position: "absolute",
+    bottom: 31,
+    left: 265,
+    fontFamily: "RobotoRegular",
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
   },
 });

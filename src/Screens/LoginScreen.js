@@ -25,7 +25,11 @@ export const LoginScreen = () => {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const onLogin = () => {
     Alert.alert("Welcome!", `${state.name}`);
   };
@@ -103,27 +107,34 @@ export const LoginScreen = () => {
                         }))
                       }
                       placeholder="Пароль"
-                      secureTextEntry="true"
+                      secureTextEntry={!showPassword}
                     ></TextInput>
+                    <View>
+                      <TouchableOpacity onPress={toggleShowPassword}>
+                        <Text style={styles.showPasswordButton}>
+                          {showPassword ? "Скрыть" : "Показать"}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.button}
+                    onPress={keyboardHide}
+                    onPressIn={onLogin}
+                  >
+                    <Text style={styles.buttonText}>Войти</Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.registrationButtonThumb}>
+                    <Button
+                      style={styles.alreadyRegisteredText}
+                      title="Нет аккаунта? Зарегистрироваться"
+                      accessibilityLabel="Нет аккаунта? Зарегистрироваться"
+                    />
                   </View>
                 </View>
               </KeyboardAvoidingView>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={styles.button}
-                onPress={keyboardHide}
-                onPressIn={onLogin}
-              >
-                <Text style={styles.buttonText}>Войти</Text>
-              </TouchableOpacity>
-
-              <View style={styles.registrationButtonThumb}>
-                <Button
-                  style={styles.alreadyRegisteredText}
-                  title="Нет аккаунта? Зарегистрироваться"
-                  accessibilityLabel="Нет аккаунта? Зарегистрироваться"
-                />
-              </View>
             </View>
           </View>
         </ImageBackground>
@@ -137,7 +148,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 0,
+    marginBottom: 10,
   },
   image: {
     alignItems: "center",
@@ -176,6 +187,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 10,
     borderWidth: 1,
+    // borderColor: "#E8E8E8",
     borderColor: "#FF6C00",
     height: 50,
     width: 343,
@@ -237,10 +249,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
   },
-  registrationButtonThumb: {},
+  registrationButtonThumb: {
+    marginBottom: 30,
+  },
   alreadyRegisteredText: {
     fontFamily: "RobotoRegular",
     fontSize: 16,
+    color: "#1B4371",
+  },
+  showPasswordButton: {
+    position: "absolute",
+    bottom: 31,
+    left: 265,
+    fontFamily: "RobotoRegular",
+    fontSize: 16,
+    lineHeight: 19,
     color: "#1B4371",
   },
 });

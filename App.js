@@ -20,8 +20,8 @@ export default function App() {
       >
        
       </ImageBackground> */}
-      {/* <LoginScreen /> */}
-      <RegistrationScreen />
+      <LoginScreen />
+      {/* <RegistrationScreen /> */}
     </View>
   );
 }
