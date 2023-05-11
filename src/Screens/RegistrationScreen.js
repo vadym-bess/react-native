@@ -12,8 +12,18 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
+  ImageBackground,
 } from "react-native";
 import { useFonts } from "expo-font";
+import { SvgXml } from "react-native-svg";
+import ImagePicker from "react-native-image-picker";
+
+const uploadIcon = `
+  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12.5" cy="12.5" r="12" fill="white" stroke="#FF6C00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z" fill="#FF6C00"/>
+</svg>
+`;
 
 const initialState = {
   name: "",
@@ -24,6 +34,7 @@ const initialState = {
 export const RegistrationScreen = () => {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [isFocused, setIsFocused] = useState(false);
 
   const onLogin = () => {
     Alert.alert("Welcome!");
@@ -45,85 +56,106 @@ export const RegistrationScreen = () => {
   };
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={styles.registrationThumb}>
-          <View
-            style={{
-              ...styles.innerThumb,
-              marginBottom: isShownKeyboard ? -160 : 0,
-            }}
-          >
-            <View style={styles.avatarThumb}>
-              <Image style={styles.userAvatar}></Image>
-              <View style={styles.userAvatarButton} />
-            </View>
-            <View>
-              <Text style={styles.registrationTitle}>Регистрация</Text>
-              <View>
-                <TextInput
-                  onFocus={() => setIsShownKeyboard(true)}
-                  style={styles.inputZone}
-                  editable
-                  maxLength={40}
-                  textAlign={"left"}
-                  value={state.name}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, name: value }))
-                  }
-                  placeholder="Логин"
-                ></TextInput>
-              </View>
-              <View>
-                <TextInput
-                  onFocus={() => setIsShownKeyboard(true)}
-                  style={styles.inputZone}
-                  editable
-                  maxLength={40}
-                  keyboardType="email-address"
-                  value={state.email}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, email: value }))
-                  }
-                  placeholder="Адрес элекронной почты"
-                ></TextInput>
-              </View>
+      <View style={styles.container}>
+        <ImageBackground
+          style={{
+            ...styles.image,
+            marginBottom: isShownKeyboard ? 80 : 0,
+          }}
+          source={require("../../src/images/Photo-BG.jpeg")}
+        >
+          <View style={styles.registrationThumb}>
+            <View style={styles.innerThumb}>
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              >
+                <View style={styles.avatarThumb}>
+                  <Image style={styles.userAvatar}></Image>
+                  <TouchableOpacity>
+                    <View style={styles.userAvatarButton}>
+                      <SvgXml xml={uploadIcon} width={25} height={25} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.innerFormThumb}>
+                  <Text style={styles.registrationTitle}>Регистрация</Text>
+                  <View>
+                    <TextInput
+                      onFocus={() => setIsShownKeyboard(true)}
+                      style={[
+                        styles.inputZone,
+                        { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                      ]}
+                      onChange={() => setIsFocused(true)}
+                      onBlur={() => setIsFocused(false)}
+                      editable
+                      maxLength={40}
+                      textAlign={"left"}
+                      value={state.name}
+                      onChangeText={(value) =>
+                        setState((prevState) => ({ ...prevState, name: value }))
+                      }
+                      placeholder="Логин"
+                    ></TextInput>
+                  </View>
+                  <View>
+                    <TextInput
+                      onFocus={() => setIsShownKeyboard(true)}
+                      style={styles.inputZone}
+                      editable
+                      maxLength={40}
+                      keyboardType="email-address"
+                      value={state.email}
+                      onChangeText={(value) =>
+                        setState((prevState) => ({
+                          ...prevState,
+                          email: value,
+                        }))
+                      }
+                      placeholder="Адрес элекронной почты"
+                    ></TextInput>
+                  </View>
 
-              <View>
-                <TextInput
-                  onFocus={() => setIsShownKeyboard(true)}
-                  style={styles.inputZone}
-                  editable
-                  maxLength={40}
-                  value={state.password}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, password: value }))
-                  }
-                  placeholder="Пароль"
-                  secureTextEntry="true"
-                ></TextInput>
-              </View>
-            </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.button}
-              onPress={keyboardHide}
-              onPressIn={onLogin}
-            >
-              <Text style={styles.buttonText}>Зарегистрироваться</Text>
-            </TouchableOpacity>
+                  <View>
+                    <TextInput
+                      onFocus={() => setIsShownKeyboard(true)}
+                      style={styles.inputZone}
+                      editable
+                      maxLength={40}
+                      value={state.password}
+                      onChangeText={(value) =>
+                        setState((prevState) => ({
+                          ...prevState,
+                          password: value,
+                        }))
+                      }
+                      placeholder="Пароль"
+                      secureTextEntry="true"
+                    ></TextInput>
+                  </View>
 
-            <View style={styles.registrationButtonThumb}>
-              <Button
-                style={styles.alreadyRegisteredText}
-                title="Уже зарегестрированы? Войти"
-                accessibilityLabel="Уже зарегестрированы? Войти"
-              />
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.button}
+                    onPress={keyboardHide}
+                    onPressIn={onLogin}
+                  >
+                    <Text style={styles.buttonText}>Зарегистрироваться</Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.registrationButtonThumb}>
+                    <Button
+                      style={styles.alreadyRegisteredText}
+                      title="Уже зарегестрированы? Войти"
+                      accessibilityLabel="Уже зарегестрированы? Войти"
+                    />
+                  </View>
+                </View>
+              </KeyboardAvoidingView>
             </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -136,11 +168,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 30,
-    height: 549,
+    minHeight: 549,
     textAlign: "center",
     backgroundColor: "#fff",
     alignItems: "center",
-    marginBottom: 160,
   },
   registrationThumb: {
     flex: 2,
@@ -148,6 +179,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: "100%",
     borderRadius: 40,
+  },
+  innerFormThumb: {
+    // backgroundColor: "pink",
+    alignItems: "center",
   },
   inputZone: {
     gap: 20,
@@ -171,12 +206,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#212121",
     marginBottom: 20,
-    marginTop: 92,
+    marginTop: 72,
+    marginBottom: 30,
   },
   avatarThumb: {
     position: "absolute",
-    top: -60,
-    left: "42%",
+    top: -90,
+    left: "33%",
     width: 120,
     height: 120,
     borderRadius: 10,
@@ -191,11 +227,8 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: "50%",
-    borderColor: "#FF6C00",
-    borderWidth: 1,
-    top: 80,
+    top: -40,
     left: 107,
-    backgroundColor: "#fff",
   },
   button: {
     backgroundColor: "#FF6C00",
@@ -204,6 +237,7 @@ const styles = StyleSheet.create({
     height: "auto",
     borderRadius: 100,
     marginTop: 43,
+    marginBottom: 16,
   },
   buttonText: {
     fontFamily: "RobotoRegular",
@@ -213,12 +247,12 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registrationButtonThumb: {
-    marginBottom: 178,
+    marginBottom: 65,
   },
   alreadyRegisteredText: {
     fontFamily: "RobotoRegular",
     fontSize: 16,
     color: "#1B4371",
-    marginTop: 178,
+    marginTop: 16,
   },
 });

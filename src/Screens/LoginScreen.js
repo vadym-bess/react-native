@@ -48,25 +48,18 @@ export const LoginScreen = () => {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
-          style={styles.image}
+          style={{
+            ...styles.image,
+            marginBottom: isShownKeyboard ? 20 : 0,
+          }}
           source={require("../../src/images/Photo-BG.jpeg")}
         >
           <View style={styles.registrationThumb}>
-            <View
-              style={{
-                ...styles.innerThumb,
-                marginBottom: isShownKeyboard ? -320 : 0,
-              }}
-            >
+            <View style={styles.innerThumb}>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
               >
-                <View
-                  style={{
-                    ...styles.innerFormThumb,
-                    marginBottom: isShownKeyboard ? 0 : 0,
-                  }}
-                >
+                <View style={styles.innerFormThumb}>
                   <Text style={styles.registrationTitle}>Войти</Text>
                   <View>
                     <TextInput
@@ -94,12 +87,12 @@ export const LoginScreen = () => {
                   <View>
                     <TextInput
                       onFocus={() => setIsShownKeyboard(true)}
-                      style={[
-                        styles.inputZone,
-                        { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
-                      ]}
-                      onChange={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
+                      style={
+                        styles.inputZone
+                        // { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                      }
+                      // onChange={() => setIsFocused(true)}
+                      // onBlur={() => setIsFocused(false)}
                       editable
                       maxLength={40}
                       value={state.password}
@@ -110,27 +103,27 @@ export const LoginScreen = () => {
                         }))
                       }
                       placeholder="Пароль"
-                      //   secureTextEntry="true"
+                      secureTextEntry="true"
                     ></TextInput>
-                  </View>
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={styles.button}
-                    onPress={keyboardHide}
-                    onPressIn={onLogin}
-                  >
-                    <Text style={styles.buttonText}>Войти</Text>
-                  </TouchableOpacity>
-
-                  <View style={styles.registrationButtonThumb}>
-                    <Button
-                      style={styles.alreadyRegisteredText}
-                      title="Нет аккаунта? Зарегистрироваться"
-                      accessibilityLabel="Нет аккаунта? Зарегистрироваться"
-                    />
                   </View>
                 </View>
               </KeyboardAvoidingView>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.button}
+                onPress={keyboardHide}
+                onPressIn={onLogin}
+              >
+                <Text style={styles.buttonText}>Войти</Text>
+              </TouchableOpacity>
+
+              <View style={styles.registrationButtonThumb}>
+                <Button
+                  style={styles.alreadyRegisteredText}
+                  title="Нет аккаунта? Зарегистрироваться"
+                  accessibilityLabel="Нет аккаунта? Зарегистрироваться"
+                />
+              </View>
             </View>
           </View>
         </ImageBackground>
@@ -168,10 +161,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     width: "100%",
+    height: "auto",
     borderRadius: 40,
   },
   innerFormThumb: {
-    backgroundColor: "blue",
+    // backgroundColor: "pink",
     alignItems: "center",
   },
   inputZone: {
@@ -188,7 +182,13 @@ const styles = StyleSheet.create({
     color: "#BDBDBD",
     fontSize: 16,
     fontFamily: "RobotoRegular",
+    justifyContent: "space-between",
   },
+  showPasswordText: {
+    position: "absolute",
+    left: 50,
+  },
+
   registrationTitle: {
     textAlign: "center",
     fontSize: 30,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
   },
-  //   registrationButtonThumb: {},
+  registrationButtonThumb: {},
   alreadyRegisteredText: {
     fontFamily: "RobotoRegular",
     fontSize: 16,
