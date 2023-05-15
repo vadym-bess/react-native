@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   Button,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -13,30 +12,20 @@ import {
   TouchableWithoutFeedback,
   Alert,
   ImageBackground,
+  ScrollView,
 } from "react-native";
-import { useFonts } from "expo-font";
-import { SvgXml } from "react-native-svg";
-import ImagePicker from "react-native-image-picker";
+// import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 
-const uploadIcon = `
-  <svg width="25" height="25" viewBox="0 0 25 25" fill="orange"  xmlns="http://www.w3.org/2000/svg">
-<circle cx="12.5" cy="12.5" r="12" fill="white" stroke="orange"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z" fill="orange"/>
-</svg>
-`;
-
 const initialState = {
-  name: "",
   email: "",
   password: "",
 };
 
-export const RegistrationScreen = () => {
+export const LoginScreen = () => {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [isFocusedName, setIsFocusedName] = useState(false);
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
@@ -44,37 +33,17 @@ export const RegistrationScreen = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  // const [avatar, setAvatar] = useState(null);
-
-  // const pickImage = () => {
-  //   ImagePicker.showImagePicker(
-  //     { title: "Select Avatar", maxWidth: 300, maxHeight: 300 },
-  //     (response) => {
-  //       if (response.didCancel) {
-  //         console.log("User cancelled image picker");
-  //       } else if (response.error) {
-  //         console.log("ImagePicker Error: ", response.error);
-  //       } else {
-  //         const source = { uri: response.uri };
-  //         setAvatar(source);
-  //       }
-  //     }
-  //   );
-  // };
-
   const onLogin = () => {
-    state.length > 1
-      ? Alert.alert("Добро пожаловать!")
-      : Alert.alert("Введите ваши данные!");
+    Alert.alert("Welcome!", `${state.name}`);
   };
 
-  const [fontsLoaded] = useFonts({
-    RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
-  });
+  // const [fontsLoaded] = useFonts({
+  //   RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
+  // });
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  // if (!fontsLoaded) {
+  //   return null;
+  // }
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -88,69 +57,26 @@ export const RegistrationScreen = () => {
         <ImageBackground
           style={{
             ...styles.image,
-            marginBottom: isShownKeyboard ? 80 : 0,
+            marginBottom: isShownKeyboard ? 20 : 0,
           }}
-          source={require("../../src/images/Photo-BG.jpeg")}
+          source={require("../../images/Photo-BG.jpeg")}
         >
           <View style={styles.registrationThumb}>
             <View style={styles.innerThumb}>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
               >
-                <View style={styles.avatarThumb}>
-                  <Image
-                    // source={require("../images/user.jpeg")}
-                    style={styles.userAvatar}
-                  ></Image>
-                  <TouchableOpacity>
-                    <View style={styles.userAvatarButton}>
-                      <SvgXml
-                        xml={uploadIcon}
-                        width={25}
-                        height={25}
-                        // transform="rotate(45)"
-                        // viewBox="-12 5 25 25"
-                      />
-                    </View>
-                  </TouchableOpacity>
-                </View>
                 <View style={styles.innerFormThumb}>
-                  <Text style={styles.registrationTitle}>Регистрация</Text>
+                  <Text style={styles.registrationTitle}>Войти</Text>
                   <View>
                     <TextInput
                       onFocus={() => setIsShownKeyboard(true)}
                       style={[
                         styles.inputZone,
-                        {
-                          borderColor: isFocusedName ? "#FF6C00" : "#E8E8E8",
-                        },
+                        { borderColor: isFocusedName ? "#FF6C00" : "#E8E8E8" },
                       ]}
                       onChange={() => setIsFocusedName(true)}
                       onBlur={() => setIsFocusedName(false)}
-                      editable
-                      maxLength={30}
-                      textAlign={"left"}
-                      value={state.name}
-                      onChangeText={(value) =>
-                        setState((prevState) => ({
-                          ...prevState,
-                          name: value,
-                        }))
-                      }
-                      placeholder="Логин"
-                    ></TextInput>
-                  </View>
-                  <View>
-                    <TextInput
-                      onFocus={() => setIsShownKeyboard(true)}
-                      style={[
-                        styles.inputZone,
-                        {
-                          borderColor: isFocusedEmail ? "#FF6C00" : "#E8E8E8",
-                        },
-                      ]}
-                      onChange={() => setIsFocusedEmail(true)}
-                      onBlur={() => setIsFocusedEmail(false)}
                       editable
                       maxLength={30}
                       keyboardType="email-address"
@@ -205,16 +131,16 @@ export const RegistrationScreen = () => {
                     onPressIn={onLogin}
                   >
                     <Text onPress={keyboardHide} style={styles.buttonText}>
-                      Зарегистрироваться
+                      Войти
                     </Text>
                   </TouchableOpacity>
 
                   <View style={styles.registrationButtonThumb}>
                     <Button
-                      onPress={() => navigation.navigate("Login")}
+                      onPress={() => navigation.navigate("Registration")}
                       style={styles.alreadyRegisteredText}
-                      title="Уже зарегестрированы? Войти"
-                      accessibilityLabel="Уже зарегестрированы? Войти"
+                      title="Нет аккаунта? Зарегистрироваться"
+                      accessibilityLabel="Нет аккаунта? Зарегистрироваться"
                     />
                   </View>
                 </View>
@@ -234,6 +160,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 0,
   },
+  image: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 0,
+  },
   innerThumb: {
     color: "#000",
     fontSize: 20,
@@ -251,6 +182,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     width: "100%",
+    height: "auto",
     borderRadius: 40,
   },
   innerFormThumb: {
@@ -265,13 +197,20 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#E8E8E8",
+    // borderColor: "#E8E8E8",
+    borderColor: "#FF6C00",
     height: 50,
     width: 343,
     color: "#BDBDBD",
     fontSize: 16,
     fontFamily: "RobotoRegular",
+    justifyContent: "space-between",
   },
+  showPasswordText: {
+    position: "absolute",
+    left: 50,
+  },
+
   registrationTitle: {
     textAlign: "center",
     fontSize: 30,
@@ -279,22 +218,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#212121",
     marginBottom: 20,
-    marginTop: 72,
-    marginBottom: 30,
+    marginTop: 0,
   },
   avatarThumb: {
     position: "absolute",
-    top: -90,
-    left: "33%",
+    top: -60,
+    left: "42%",
     width: 120,
     height: 120,
+    borderRadius: 10,
     backgroundColor: "#F6F6F6",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    borderRadius: 20,
   },
   userAvatar: {
-    borderRadius: 20,
     width: 120,
     height: 120,
   },
@@ -303,8 +238,11 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: "50%",
-    top: -40,
+    borderColor: "#FF6C00",
+    borderWidth: 1,
+    top: 80,
     left: 107,
+    backgroundColor: "#fff",
   },
   button: {
     backgroundColor: "#FF6C00",
@@ -312,7 +250,7 @@ const styles = StyleSheet.create({
     width: 343,
     height: "auto",
     borderRadius: 100,
-    marginTop: 43,
+    marginTop: 30,
     marginBottom: 16,
   },
   buttonText: {
@@ -323,13 +261,12 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registrationButtonThumb: {
-    marginBottom: 65,
+    marginTop: 0,
   },
   alreadyRegisteredText: {
     fontFamily: "RobotoRegular",
     fontSize: 16,
     color: "#1B4371",
-    marginTop: 16,
   },
   showPasswordButton: {
     position: "absolute",
