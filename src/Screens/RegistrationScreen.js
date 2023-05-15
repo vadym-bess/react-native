@@ -17,6 +17,7 @@ import {
 import { useFonts } from "expo-font";
 import { SvgXml } from "react-native-svg";
 import ImagePicker from "react-native-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 const uploadIcon = `
   <svg width="25" height="25" viewBox="0 0 25 25" fill="orange"  xmlns="http://www.w3.org/2000/svg">
@@ -34,8 +35,11 @@ const initialState = {
 export const RegistrationScreen = () => {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedName, setIsFocusedName] = useState(false);
+  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -117,16 +121,21 @@ export const RegistrationScreen = () => {
                       onFocus={() => setIsShownKeyboard(true)}
                       style={[
                         styles.inputZone,
-                        { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                        {
+                          borderColor: isFocusedName ? "#FF6C00" : "#E8E8E8",
+                        },
                       ]}
-                      onChange={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
+                      onChange={() => setIsFocusedName(true)}
+                      onBlur={() => setIsFocusedName(false)}
                       editable
                       maxLength={30}
                       textAlign={"left"}
                       value={state.name}
                       onChangeText={(value) =>
-                        setState((prevState) => ({ ...prevState, name: value }))
+                        setState((prevState) => ({
+                          ...prevState,
+                          name: value,
+                        }))
                       }
                       placeholder="Логин"
                     ></TextInput>
@@ -134,7 +143,14 @@ export const RegistrationScreen = () => {
                   <View>
                     <TextInput
                       onFocus={() => setIsShownKeyboard(true)}
-                      style={styles.inputZone}
+                      style={[
+                        styles.inputZone,
+                        {
+                          borderColor: isFocusedEmail ? "#FF6C00" : "#E8E8E8",
+                        },
+                      ]}
+                      onChange={() => setIsFocusedEmail(true)}
+                      onBlur={() => setIsFocusedEmail(false)}
                       editable
                       maxLength={30}
                       keyboardType="email-address"
@@ -152,7 +168,16 @@ export const RegistrationScreen = () => {
                   <View>
                     <TextInput
                       onFocus={() => setIsShownKeyboard(true)}
-                      style={styles.inputZone}
+                      style={[
+                        styles.inputZone,
+                        {
+                          borderColor: isFocusedPassword
+                            ? "#FF6C00"
+                            : "#E8E8E8",
+                        },
+                      ]}
+                      onChange={() => setIsFocusedPassword(true)}
+                      onBlur={() => setIsFocusedPassword(false)}
                       editable
                       maxLength={24}
                       value={state.password}
@@ -186,6 +211,7 @@ export const RegistrationScreen = () => {
 
                   <View style={styles.registrationButtonThumb}>
                     <Button
+                      onPress={() => navigation.navigate("Login")}
                       style={styles.alreadyRegisteredText}
                       title="Уже зарегестрированы? Войти"
                       accessibilityLabel="Уже зарегестрированы? Войти"
@@ -202,6 +228,12 @@ export const RegistrationScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 0,
+  },
   innerThumb: {
     color: "#000",
     fontSize: 20,

@@ -12,11 +12,12 @@ import {
   TouchableWithoutFeedback,
   Alert,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 import { useFonts } from "expo-font";
+import { useNavigation } from "@react-navigation/native";
 
 const initialState = {
-  name: "",
   email: "",
   password: "",
 };
@@ -24,8 +25,10 @@ const initialState = {
 export const LoginScreen = () => {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedName, setIsFocusedName] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -70,12 +73,12 @@ export const LoginScreen = () => {
                       onFocus={() => setIsShownKeyboard(true)}
                       style={[
                         styles.inputZone,
-                        { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                        { borderColor: isFocusedName ? "#FF6C00" : "#E8E8E8" },
                       ]}
-                      onChange={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
+                      onChange={() => setIsFocusedName(true)}
+                      onBlur={() => setIsFocusedName(false)}
                       editable
-                      maxLength={40}
+                      maxLength={30}
                       keyboardType="email-address"
                       value={state.email}
                       onChangeText={(value) =>
@@ -91,14 +94,18 @@ export const LoginScreen = () => {
                   <View>
                     <TextInput
                       onFocus={() => setIsShownKeyboard(true)}
-                      style={
-                        styles.inputZone
-                        // { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
-                      }
-                      // onChange={() => setIsFocused(true)}
-                      // onBlur={() => setIsFocused(false)}
+                      style={[
+                        styles.inputZone,
+                        {
+                          borderColor: isFocusedPassword
+                            ? "#FF6C00"
+                            : "#E8E8E8",
+                        },
+                      ]}
+                      onChange={() => setIsFocusedPassword(true)}
+                      onBlur={() => setIsFocusedPassword(false)}
                       editable
-                      maxLength={40}
+                      maxLength={24}
                       value={state.password}
                       onChangeText={(value) =>
                         setState((prevState) => ({
@@ -123,11 +130,14 @@ export const LoginScreen = () => {
                     onPress={keyboardHide}
                     onPressIn={onLogin}
                   >
-                    <Text style={styles.buttonText}>Войти</Text>
+                    <Text onPress={keyboardHide} style={styles.buttonText}>
+                      Войти
+                    </Text>
                   </TouchableOpacity>
 
                   <View style={styles.registrationButtonThumb}>
                     <Button
+                      onPress={() => navigation.navigate("Registration")}
                       style={styles.alreadyRegisteredText}
                       title="Нет аккаунта? Зарегистрироваться"
                       accessibilityLabel="Нет аккаунта? Зарегистрироваться"
