@@ -47,7 +47,10 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <Tab.Navigator tabBarOptions={{ showLabel: false }}>
+    <Tab.Navigator
+      tabBarOptions={{ showLabel: false }}
+      style={styles.tabBarStyles}
+    >
       <Tab.Screen
         options={{
           tabBarItemStyle: {
@@ -67,7 +70,9 @@ export const useRoute = (isAuth) => {
             </NavigationContainer>
           ),
           headerStyle: {
-            backgroundColor: "#f08080",
+            // backgroundColor: "#f08080",
+            borderBottomWidth: 1,
+            borderBottomColor: "#E8E8E8",
           },
         }}
         name="Публикации"
@@ -95,7 +100,9 @@ export const useRoute = (isAuth) => {
             </NavigationContainer>
           ),
           headerStyle: {
-            backgroundColor: "#f08080",
+            // backgroundColor: "#f08080",
+            borderBottomWidth: 1,
+            borderBottomColor: "#E8E8E8",
           },
         }}
         name="Создать публикацию"
@@ -119,10 +126,12 @@ export const useRoute = (isAuth) => {
             </NavigationContainer>
           ),
           headerStyle: {
-            backgroundColor: "#f08080",
+            // backgroundColor: "#f08080",
+            borderBottomWidth: 1,
+            borderBottomColor: "#E8E8E8",
           },
         }}
-        name="Profile"
+        name="Профиль"
         component={ProfileScreen}
       />
     </Tab.Navigator>
@@ -133,5 +142,9 @@ const styles = StyleSheet.create({
   plusButton: {
     width: 70,
     height: 40,
+  },
+  tabBarStyles: {
+    borderTopWidth: 2,
+    borderColor: "#E8E8E8",
   },
 });
