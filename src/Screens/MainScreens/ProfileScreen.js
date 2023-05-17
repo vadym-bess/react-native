@@ -1,10 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 export const ProfileScreen = () => {
   return (
     <View style={styles.conteiner}>
-      <Text>This is Profile screen!</Text>
+      <TouchableOpacity>
+        <Text style={{ marginBottom: 50, fontSize: 30 }}>to map!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Text style={{ marginBottom: 50, fontSize: 30 }}>to comments!</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -7,10 +7,12 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     RobotoRegular: require("./assets/fonts/Roboto-Regular.ttf"),
   });
-  const routing = useRoute({});
 
   if (!fontsLoaded) {
     return null;
   }
+
+  const routing = useRoute(true);
+
   return <NavigationContainer>{routing}</NavigationContainer>;
 }

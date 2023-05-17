@@ -1,0 +1,4 @@
+<key>NSCameraUsageDescription</key>
+<string>Your camera will be used to take photos.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Your photos will be saved to the camera roll.</string>

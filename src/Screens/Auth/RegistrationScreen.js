@@ -14,17 +14,9 @@ import {
   Alert,
   ImageBackground,
 } from "react-native";
-// import { useFonts } from "expo-font";
 import { SvgXml } from "react-native-svg";
-import ImagePicker from "react-native-image-picker";
 import { useNavigation } from "@react-navigation/native";
-
-const uploadIcon = `
-  <svg width="25" height="25" viewBox="0 0 25 25" fill="orange"  xmlns="http://www.w3.org/2000/svg">
-<circle cx="12.5" cy="12.5" r="12" fill="white" stroke="orange"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z" fill="orange"/>
-</svg>
-`;
+import { uploadIcon } from "../../../utils/svgIcons/icons";
 
 const initialState = {
   name: "",
@@ -44,37 +36,12 @@ export const RegistrationScreen = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  // const [avatar, setAvatar] = useState(null);
-
-  // const pickImage = () => {
-  //   ImagePicker.showImagePicker(
-  //     { title: "Select Avatar", maxWidth: 300, maxHeight: 300 },
-  //     (response) => {
-  //       if (response.didCancel) {
-  //         console.log("User cancelled image picker");
-  //       } else if (response.error) {
-  //         console.log("ImagePicker Error: ", response.error);
-  //       } else {
-  //         const source = { uri: response.uri };
-  //         setAvatar(source);
-  //       }
-  //     }
-  //   );
-  // };
 
   const onLogin = () => {
     state.length > 1
       ? Alert.alert("Добро пожаловать!")
       : Alert.alert("Введите ваши данные!");
   };
-
-  // const [fontsLoaded] = useFonts({
-  //   RobotoRegular: require("../../../assets/fonts/Roboto-Regular.ttf"),
-  // });
-
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -198,6 +165,7 @@ export const RegistrationScreen = () => {
                       </TouchableOpacity>
                     </View>
                   </View>
+
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.button}

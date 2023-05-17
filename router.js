@@ -6,28 +6,16 @@ import { PostScreen } from "./src/Screens/MainScreens/PostScreen";
 import { CreatePostsScreen } from "./src/Screens/MainScreens/CreatePostsScreen.js";
 import { ProfileScreen } from "./src/Screens/MainScreens/ProfileScreen.js";
 import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from "expo-font";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SvgXml } from "react-native-svg";
 import { AntDesign } from "@expo/vector-icons";
-
+import { svgString, ArrowLeft } from "./utils/svgIcons/icons.js";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
 const MainStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const svgString = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 22H5C3.89543 22 3 21.1046 3 20V4C3 2.89543 3.89543 2 5 2H10" stroke="#BDBDBD" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M17 16L21 12L17 8" stroke="#BDBDBD" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M21 12H9" stroke="#BDBDBD" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
-
-const ArrowLeft = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M20 12H4" stroke="#212121" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10 18L4 12L10 6" stroke="#212121" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
 
 export const useRoute = (isAuth) => {
   if (!isAuth) {
@@ -75,7 +63,7 @@ export const useRoute = (isAuth) => {
             borderBottomColor: "#E8E8E8",
           },
         }}
-        name="Публикации"
+        name="PostScreen"
         component={PostScreen}
       />
       <Tab.Screen
@@ -128,7 +116,7 @@ export const useRoute = (isAuth) => {
           headerStyle: {
             // backgroundColor: "#f08080",
             borderBottomWidth: 1,
-            borderBottomColor: "#E8E8E8",
+            borderColor: "#E8E8E8",
           },
         }}
         name="Профиль"
@@ -142,9 +130,5 @@ const styles = StyleSheet.create({
   plusButton: {
     width: 70,
     height: 40,
-  },
-  tabBarStyles: {
-    borderTopWidth: 2,
-    borderColor: "#E8E8E8",
   },
 });
