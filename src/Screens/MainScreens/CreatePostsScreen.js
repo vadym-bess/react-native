@@ -29,7 +29,6 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState("");
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  const [type, setType] = useState(CameraType.back);
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -39,32 +38,34 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    const location = await Location.getCurrentPositionAsync();
-    console.log(location);
+    // const location = await Location.getCurrentPositionAsync();
     setPhoto(photo.uri);
+    console.log(photo.uri);
   };
 
   const sendPhoto = () => {
     navigation.navigate("PostScreen", { photo });
+    console.log(state);
   };
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
-        <Camera style={styles.camera} ref={setCamera} type={type}>
+        <Camera style={styles.camera} ref={setCamera}>
           {photo && (
             <View style={styles.takePhotoContainer}>
               <Image
                 source={{ uri: photo }}
-                style={{ width: "100%", height: 240 }}
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: 140,
+                  borderRadius: 5,
+                }}
               />
             </View>
           )}
-          <TouchableOpacity
-            onPress={() => {
-              takePhoto;
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={takePhoto}>
             <View style={styles.cameraButton}>
               <SvgXml
                 xml={makePhotoIcon}
@@ -90,6 +91,7 @@ export const CreatePostsScreen = ({ navigation }) => {
           <View style={styles.inputTop}>
             <TextInput
               onFocus={() => setIsShownKeyboard(true)}
+              onPressIn={sendPhoto}
               style={styles.textInputTop}
               placeholder="Название..."
               editable
@@ -133,9 +135,17 @@ export const CreatePostsScreen = ({ navigation }) => {
         <TouchableOpacity
           onPress={keyboardHide}
           onPressIn={sendPhoto}
-          style={styles.postButton}
+          style={{
+            ...styles.postButton,
+            backgroundColor: photo ? "#FF6C00" : "#F6F6F6",
+          }}
         >
-          <Text style={styles.postButtonText} onPressIn={sendPhoto}>
+          <Text
+            style={{
+              ...styles.postButtonText,
+              color: photo ? "#fff" : "#BDBDBD",
+            }}
+          >
             Опубликовать
           </Text>
         </TouchableOpacity>
@@ -156,7 +166,6 @@ const styles = StyleSheet.create({
     height: "auto",
   },
   camera: {
-    display: "flex",
     backgroundColor: "#E8E8E8",
     height: 240,
     width: "100%",
@@ -178,12 +187,12 @@ const styles = StyleSheet.create({
   },
   takePhotoContainer: {
     position: "absolute",
-    left: 50,
-    top: 50,
-    width: 343,
-    height: 240,
-    borderWidth: 1,
+    left: 191,
+    top: 150,
+    width: "50%",
+    height: 140,
     zIndex: 1,
+    borderRadius: 5,
   },
   uploadText: {
     fontFamily: "RobotoRegular",
@@ -210,18 +219,21 @@ const styles = StyleSheet.create({
   },
   textInputTop: {
     fontFamily: "RobotoRegular",
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "flex-start",
-    color: "#BDBDBD",
+    color: "#212121",
+    marginLeft: 30,
     width: "100%",
   },
   textInputBottom: {
     fontFamily: "RobotoRegular",
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "flex-start",
-    color: "#BDBDBD",
+    color: "#212121",
     marginLeft: 30,
     width: "100%",
   },
@@ -233,7 +245,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   postButton: {
-    backgroundColor: "#F6F6F6",
     padding: 16,
     width: 343,
     height: "auto",

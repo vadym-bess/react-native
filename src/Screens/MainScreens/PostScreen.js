@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import { StyleSheet, TextInput, View, FlatList, Image } from "react-native";
 
 export const PostScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
@@ -8,7 +8,7 @@ export const PostScreen = ({ route }) => {
       setPosts((prevState) => [...prevState, route.params]);
     }
   }, [route.params]);
-  console.log(posts);
+
   return (
     <View style={styles.conteiner}>
       <FlatList
@@ -16,7 +16,7 @@ export const PostScreen = ({ route }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.imageThumb}>
-            <Image source={{ uri: item.photo }} />
+            <Image style={styles.image} source={{ uri: item.photo }} />
           </View>
         )}
       />
@@ -38,10 +38,12 @@ const styles = StyleSheet.create({
   image: {
     height: 240,
     width: "100%",
-    borderWidth: 1,
+    borderRadius: 10,
   },
   imageThumb: {
-    marginBottom: 20,
+    height: 240,
+    width: "100%",
+    marginBottom: 80,
     alignItems: "center",
     justifyContent: "center",
   },

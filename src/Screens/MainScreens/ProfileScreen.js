@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.conteiner}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
         <Text style={{ marginBottom: 50, fontSize: 30 }}>to map!</Text>
       </TouchableOpacity>
       <TouchableOpacity>
