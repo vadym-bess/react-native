@@ -12,12 +12,13 @@ import {
 } from "react-native";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Camera, CameraType } from "expo-camera";
+import { Camera } from "expo-camera";
 import { SvgXml } from "react-native-svg";
 import * as Location from "expo-location";
 
 import { makePhotoIcon } from "../../../utils/svgIcons/icons";
 import { locationIcon } from "../../../utils/svgIcons/icons";
+import { deleteIcon } from "../../../utils/svgIcons/icons";
 
 const initialState = {
   name: "",
@@ -36,20 +37,33 @@ export const CreatePostsScreen = ({ navigation }) => {
     setState(initialState);
   };
 
+  const cleanKeyBoardHide = () => {
+    setIsShownKeyboard(false);
+    Keyboard.dismiss();
+  };
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+    })();
+  }, []);
+
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    // const location = await Location.getCurrentPositionAsync();
+    const location = await Location.getCurrentPositionAsync();
     setPhoto(photo.uri);
-    console.log(photo.uri);
   };
 
   const sendPhoto = () => {
     navigation.navigate("PostScreen", { photo });
-    console.log(state);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={cleanKeyBoardHide}>
       <View style={styles.container}>
         <Camera style={styles.camera} ref={setCamera}>
           {photo && (
@@ -91,7 +105,6 @@ export const CreatePostsScreen = ({ navigation }) => {
           <View style={styles.inputTop}>
             <TextInput
               onFocus={() => setIsShownKeyboard(true)}
-              onPressIn={sendPhoto}
               style={styles.textInputTop}
               placeholder="Название..."
               editable
@@ -148,6 +161,15 @@ export const CreatePostsScreen = ({ navigation }) => {
           >
             Опубликовать
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <SvgXml
+            xml={deleteIcon}
+            width={70}
+            height={40}
+            borderRadius={50}
+            marginTop={100}
+          />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
@@ -224,7 +246,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     alignSelf: "flex-start",
     color: "#212121",
-    marginLeft: 30,
     width: "100%",
   },
   textInputBottom: {

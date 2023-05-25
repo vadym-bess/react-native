@@ -7,7 +7,7 @@ export const ProfileScreen = ({ navigation }) => {
       <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
         <Text style={{ marginBottom: 50, fontSize: 30 }}>to map!</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen")}>
         <Text style={{ marginBottom: 50, fontSize: 30 }}>to comments!</Text>
       </TouchableOpacity>
     </View>

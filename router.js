@@ -2,7 +2,6 @@ import * as React from "react";
 import { RegistrationScreen } from "./src/Screens/Auth/RegistrationScreen.js";
 import { LoginScreen } from "./src/Screens/Auth/LoginScreen.js";
 import { Home } from "./src/Screens/MainScreens/Home.js";
-import { PostScreen } from "./src/Screens/MainScreens/PostScreen";
 import { CreatePostsScreen } from "./src/Screens/MainScreens/CreatePostsScreen.js";
 import { ProfileScreen } from "./src/Screens/MainScreens/ProfileScreen.js";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,7 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { svgString, ArrowLeft } from "./utils/svgIcons/icons.js";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Screen } from "react-native";
 
 const MainStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,8 +62,8 @@ export const useRoute = (isAuth) => {
             borderBottomColor: "#E8E8E8",
           },
         }}
-        name="PostScreen"
-        component={PostScreen}
+        name="Home"
+        component={Home}
       />
       <Tab.Screen
         style={styles.plusButton}
@@ -76,7 +75,7 @@ export const useRoute = (isAuth) => {
             color: "#fff",
           },
           tabBarIcon: ({ focused, size, color, width }) => (
-            <AntDesign name="plus" size={24} color={"#fff"} width={25} />
+            <AntDesign name="plus" size={25} color={"#fff"} width={25} />
           ),
           headerLeft: () => (
             <NavigationContainer independent={true}>
@@ -128,7 +127,7 @@ export const useRoute = (isAuth) => {
 
 const styles = StyleSheet.create({
   plusButton: {
-    width: 70,
+    width: 40,
     height: 40,
   },
 });

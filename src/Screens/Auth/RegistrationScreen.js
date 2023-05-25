@@ -17,6 +17,8 @@ import {
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { uploadIcon } from "../../../utils/svgIcons/icons";
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../../../redux/auth/authOperations";
 
 const initialState = {
   name: "",
@@ -33,22 +35,23 @@ export const RegistrationScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
-  };
-
-  const onLogin = () => {
-    state.length > 1
-      ? Alert.alert("Добро пожаловать!")
-      : Alert.alert("Введите ваши данные!");
   };
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    dispatch(authSignUpUser(state));
     setState(initialState);
   };
+
+  // const onlyKeyboardHide = () => {
+  //   Keyboard.dismiss();
+  // };
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
@@ -170,11 +173,8 @@ export const RegistrationScreen = () => {
                     activeOpacity={0.7}
                     style={styles.button}
                     onPress={keyboardHide}
-                    onPressIn={onLogin}
                   >
-                    <Text onPress={keyboardHide} style={styles.buttonText}>
-                      Зарегистрироваться
-                    </Text>
+                    <Text style={styles.buttonText}>Зарегистрироваться</Text>
                   </TouchableOpacity>
 
                   <View style={styles.registrationButtonThumb}>
