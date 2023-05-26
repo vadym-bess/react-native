@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Button,
 } from "react-native";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -31,6 +30,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState("");
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [location, setLocation] = useState(null);
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -48,38 +48,29 @@ export const CreatePostsScreen = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       setErrorMsg("Permission to access location was denied");
-  //       const coords = {
-  //       latitude: location.coords.latitude,
-  //       longitude: location.coords.longitude,
-  //     };
-  //     setLocation(coords);
-  //       return;
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
     console.log("location-->", location);
     setPhoto(photo.uri);
+    setLocation(location.coords);
   };
 
-  // const handlePublication = () => {
-  //   if (photo && location && name) {
-  //     keyboardHide();
-  //     navigation.navigate("PostScreen", { photo, name, location });
-  //   }
-  //   return;
-  // };
-
   const sendPhoto = () => {
-    navigation.navigate("PostScreen", { photo, state });
+    navigation.navigate("PostScreen", { photo, state, location });
   };
 
   return (
@@ -167,7 +158,6 @@ export const CreatePostsScreen = ({ navigation }) => {
         </KeyboardAvoidingView>
         <TouchableOpacity
           onPress={keyboardHide}
-          // onPressIn={handlePublication}
           onPressIn={sendPhoto}
           style={{
             ...styles.postButton,

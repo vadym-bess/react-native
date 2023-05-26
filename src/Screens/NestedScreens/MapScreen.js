@@ -3,42 +3,45 @@ import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View, Dimensions } from "react-native";
 import * as Location from "expo-location";
 
-export const MapScreen = () => {
-  const [location, setLocation] = useState(null);
+export const MapScreen = ({ location }) => {
+  // const [location, setLocation] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      }
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setLocation(coords);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestPermissionsAsync();
+  //     if (status !== "granted") {
+  //       console.log("Permission to access location was denied");
+  //     }
+  //     const coords = {
+  //       latitude: location.coords.latitude,
+  //       longitude: location.coords.longitude,
+  //     };
+  //     setLocation(coords);
+  //   })();
+  // }, []);
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.mapStyle}
         region={{
-          ...location,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          longitude: 31.886468742271294,
+          latitude: 51.04414463216664,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}
-        showsUserLocation={false}
+        showsUserLocation={true}
       >
-        {location && (
-          <Marker
-            pinColor="red"
-            title="I am here"
-            coordinate={location}
-            description="Hello"
-          />
-        )}
+        {/* {location && ( */}
+        <Marker
+          pinColor="red"
+          title="I am here"
+          coordinate={{
+            longitude: 31.886468742271294,
+            latitude: 51.04414463216664,
+          }}
+          description="Hello"
+        />
       </MapView>
     </View>
   );
