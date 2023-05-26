@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import * as Location from "expo-location";
-import { locationIcon } from "../../../utils/svgIcons/icons";
+import { locationIcon, postsIcon } from "../../../utils/svgIcons/icons";
 
 export const PostScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -22,7 +22,19 @@ export const PostScreen = ({ route, navigation }) => {
   console.log("Posts--->", posts);
   return (
     <View style={styles.container}>
+      <View style={styles.userAvatarThumb}>
+        <Image
+          source={require("../../images/user.jpeg")}
+          style={styles.userAvatar}
+        ></Image>
+        <View style={styles.userNameThumb}>
+          <Text style={styles.userName}>Natali Romanova</Text>
+          <Text style={styles.userEmail}>nataliRomanova@gmail.com</Text>
+        </View>
+      </View>
+
       <FlatList
+        style={styles.flatListThumb}
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
@@ -32,7 +44,20 @@ export const PostScreen = ({ route, navigation }) => {
             </View>
             <View>
               <Text style={styles.photoTitle}>{item.state.name}</Text>
+
               <View style={styles.locationFlexedThumb}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CommentsScreen")}
+                  style={styles.postsIcon}
+                >
+                  <SvgXml
+                    xml={postsIcon}
+                    width={25}
+                    height={25}
+                    borderRadius={50}
+                  />
+                  <Text style={styles.postsCount}>0</Text>
+                </TouchableOpacity>
                 <View style={styles.locationIcon}>
                   <SvgXml
                     xml={locationIcon}
@@ -53,15 +78,6 @@ export const PostScreen = ({ route, navigation }) => {
           </>
         )}
       />
-
-      <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
-          <Text style={{ marginBottom: 10, fontSize: 30 }}>to map!</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen")}>
-          <Text style={{ marginBottom: 10, fontSize: 30 }}>to comments!</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -86,7 +102,6 @@ const styles = StyleSheet.create({
     height: 240,
     width: "100%",
     marginBottom: 8,
-
     marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -114,11 +129,53 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     marginTop: 11,
     marginBottom: 20,
   },
   locationIcon: {
     marginRight: 9,
+  },
+  postsIcon: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  postsCount: {
+    color: "#BDBDBD",
+  },
+  userAvatarThumb: {
+    // flex: 1,
+    // flexDirection: "row",
+    // alignItems: "center",
+    // justifyContent: "flex-start",
+    // marginBottom: 42,
+    // marginTop: 22,
+    width: "auto",
+    height: 60,
+    flex: 0,
+    flexDirection: "row",
+    gap: 20,
+    alignItems: "center",
+  },
+  userAvatar: {
+    borderRadius: 10,
+    width: 60,
+    height: 60,
+  },
+  userNameThumb: {},
+  userName: {
+    fontFamily: "RobotoRegular",
+    fontWeight: "900",
+    fontSize: 13,
+  },
+  userEmail: {
+    fontFamily: "RobotoRegular",
+    fontWeight: 400,
+    fontSize: 11,
+  },
+  flatListThumb: {
+    marginTop: 30,
   },
 });

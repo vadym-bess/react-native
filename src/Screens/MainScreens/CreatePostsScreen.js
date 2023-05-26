@@ -43,15 +43,20 @@ export const CreatePostsScreen = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       const coords = {
+  //       latitude: location.coords.latitude,
+  //       longitude: location.coords.longitude,
+  //     };
+  //     setLocation(coords);
+  //       return;
+  //     }
+  //   })();
+  // }, []);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
