@@ -38,6 +38,11 @@ export const CreatePostsScreen = ({ navigation }) => {
     setState(initialState);
   };
 
+  const resetData = () => {
+    setPhoto(null);
+    setState(initialState);
+  };
+
   const cleanKeyBoardHide = () => {
     setIsShownKeyboard(false);
     Keyboard.dismiss();
@@ -178,7 +183,7 @@ export const CreatePostsScreen = ({ navigation }) => {
             Опубликовать
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={resetData}>
           <SvgXml
             xml={deleteIcon}
             width={70}

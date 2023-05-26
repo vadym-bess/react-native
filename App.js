@@ -4,6 +4,7 @@ import { useRoute } from "./router";
 import { useFonts } from "expo-font";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { selectStateChange } from "./redux/selectors";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,7 +15,7 @@ export default function App() {
     return null;
   }
 
-  const routing = useRoute(true);
+  const routing = useRoute(selectStateChange);
 
   return (
     <Provider store={store}>

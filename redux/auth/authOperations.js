@@ -1,37 +1,85 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase/config.js";
+import "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
-export const authSignUpUser = (email, password) => {
-  const authInstance = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ...
-    });
+import { auth } from "../../firebase/config";
+
+import {
+  getAuth,
+  updateProfile,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+
+import { authSlice } from "./authReducer";
+
+const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions;
+
+export const authSignUpUser =
+  ({ email, login, password }) =>
+  async () => {
+    try {
+      const auth = getAuth();
+
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+
+      updateProfile(auth.currentUser, {
+        displayName: login,
+        email,
+      });
+
+      console.log("user", user);
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.code", error.code);
+      console.log("error.message", error.message);
+    }
+  };
+
+export const authSignInUser =
+  ({ email, password }) =>
+  async () => {
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log("user", user);
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.code", error.code);
+      console.log("error.message", error.message);
+    }
+  };
+
+export const authSignOutUser = () => async (dispatch, getState) => {
+  try {
+    await signOut(auth);
+    dispatch(authSignOut());
+  } catch (error) {
+    console.log("error:", error);
+    console.log("error.code:", error.code);
+    console.log("error.message:", error.message);
+  }
 };
 
-// export const authSignUpUser =
-//   ({ email, password, name }) =>
-//   async (dispatch, getState) => {
-//     try {
-//       const user = await auth
-//         .auth()
-//         .createUserWithEmailAndPassword(email, password);
-//       console.log("user-->", user);
-//     } catch (error) {
-//       const errorCode = error.code;
-//       console.log(errorCode);
-//       const errorMessage = error.message;
-//       console.log(errorMessage);
-//     }
-//   };
+export const authStateCahngeUser = () => async (dispatch, getState) => {
+  try {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(
+          updateUserProfile({
+            userId: user.uid,
+            login: user.displayName,
+            email: user.email,
+          })
+        );
 
-// export const authSignInUser = () => async (dispatch, getState) => {};
-
-// export const authSignOutUser = () => async (dispatch, getState) => {};
+        dispatch(authStateChange({ stateChange: true }));
+      }
+    });
+  } catch (error) {
+    console.log("error:", error);
+    console.log("error.code:", error.code);
+    console.log("error.message:", error.message);
+  }
+};
