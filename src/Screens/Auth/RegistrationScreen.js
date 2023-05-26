@@ -44,16 +44,17 @@ export const RegistrationScreen = () => {
   const keyboardHide = () => {
     setIsShownKeyboard(false);
     Keyboard.dismiss();
+    console.log(state);
     dispatch(authSignUpUser(state));
     setState(initialState);
   };
 
-  // const onlyKeyboardHide = () => {
-  //   Keyboard.dismiss();
-  // };
+  const onlyKeyboardHide = () => {
+    Keyboard.dismiss();
+  };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={onlyKeyboardHide}>
       <View style={styles.container}>
         <ImageBackground
           style={{
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 25,
     height: 25,
-    borderRadius: "50%",
+    borderRadius: 50,
     top: -40,
     left: 107,
   },

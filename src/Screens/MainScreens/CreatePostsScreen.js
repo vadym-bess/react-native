@@ -19,6 +19,7 @@ import * as Location from "expo-location";
 import { makePhotoIcon } from "../../../utils/svgIcons/icons";
 import { locationIcon } from "../../../utils/svgIcons/icons";
 import { deleteIcon } from "../../../utils/svgIcons/icons";
+import { MapScreen } from "../NestedScreens/MapScreen";
 
 const initialState = {
   name: "",
@@ -55,11 +56,20 @@ export const CreatePostsScreen = ({ navigation }) => {
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
+    console.log("location-->", location);
     setPhoto(photo.uri);
   };
 
+  // const handlePublication = () => {
+  //   if (photo && location && name) {
+  //     keyboardHide();
+  //     navigation.navigate("PostScreen", { photo, name, location });
+  //   }
+  //   return;
+  // };
+
   const sendPhoto = () => {
-    navigation.navigate("PostScreen", { photo });
+    navigation.navigate("PostScreen", { photo, state });
   };
 
   return (
@@ -147,6 +157,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         </KeyboardAvoidingView>
         <TouchableOpacity
           onPress={keyboardHide}
+          // onPressIn={handlePublication}
           onPressIn={sendPhoto}
           style={{
             ...styles.postButton,

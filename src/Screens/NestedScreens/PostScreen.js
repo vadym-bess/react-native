@@ -7,6 +7,9 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
+import * as Location from "expo-location";
+import { locationIcon } from "../../../utils/svgIcons/icons";
 
 export const PostScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -23,9 +26,31 @@ export const PostScreen = ({ route, navigation }) => {
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.imageThumb}>
-            <Image style={styles.image} source={{ uri: item.photo }} />
-          </View>
+          <>
+            <View style={styles.imageThumb}>
+              <Image style={styles.image} source={{ uri: item.photo }} />
+            </View>
+            <View>
+              <Text style={styles.photoTitle}>{item.state.name}</Text>
+              <View style={styles.locationFlexedThumb}>
+                <View style={styles.locationIcon}>
+                  <SvgXml
+                    xml={locationIcon}
+                    width={25}
+                    height={25}
+                    borderRadius={50}
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("MapScreen")}
+                >
+                  <Text style={styles.photoLocationName}>
+                    {item.state.location}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
         )}
       />
 
@@ -60,6 +85,7 @@ const styles = StyleSheet.create({
   imageThumb: {
     height: 240,
     width: "100%",
+    marginBottom: 8,
 
     marginTop: 10,
     alignItems: "center",
@@ -68,5 +94,31 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     color: "#000",
+  },
+  photoTitle: {
+    fontFamily: "RobotoRegular",
+    fontWeight: 400,
+    fontSize: 16,
+    alignSelf: "flex-start",
+    color: "#000",
+  },
+  photoLocationName: {
+    fontFamily: "RobotoRegular",
+    fontWeight: 400,
+    fontSize: 16,
+    color: "#000",
+    alignSelf: "flex-end",
+    textDecorationLine: "underline",
+  },
+  locationFlexedThumb: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginTop: 11,
+    marginBottom: 20,
+  },
+  locationIcon: {
+    marginRight: 9,
   },
 });

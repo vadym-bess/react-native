@@ -80,9 +80,12 @@ export const useRoute = (isAuth) => {
           headerLeft: () => (
             <NavigationContainer independent={true}>
               <TouchableOpacity>
-                <View style={{ marginLeft: 21 }}>
+                <TouchableOpacity
+                  style={{ marginLeft: 21 }}
+                  // onPress={() => navigation.navigate("PostsScreen")}
+                >
                   <SvgXml xml={ArrowLeft} width={25} height={25} />
-                </View>
+                </TouchableOpacity>
               </TouchableOpacity>
             </NavigationContainer>
           ),
