@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { selectStateChange } from "./redux/selectors";
+import { auth } from "./firebase/config";
 
 export default function App() {
   const [fontsLoaded] = useFonts({

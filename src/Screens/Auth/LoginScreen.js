@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
+
 import {
   StyleSheet,
   Text,
@@ -16,6 +18,10 @@ import {
 } from "react-native";
 // import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import { authSignInUser } from "../../../redux/auth/authOperations";
+// import * as SplashScreen from "expo-splash-screen";
+
+// SplashScreen.preventAutoHideAsync();
 
 const initialState = {
   email: "",
@@ -28,29 +34,50 @@ export const LoginScreen = () => {
   const [isFocusedName, setIsFocusedName] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  // const [appIsReady, setAppIsReady] = useState(false);
+
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  const onLogin = () => {
-    Alert.alert("Welcome!", `${state.name}`);
-  };
 
-  // const [fontsLoaded] = useFonts({
-  //   RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
-  // });
-
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
+  // const onLogin = () => {
+  //   Alert.alert("Welcome!", `${state.name}`);
+  // };
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    dispatch(authSignInUser(state));
     setState(initialState);
   };
+
+  // useEffect(() => {
+  //   async function prepare() {
+  //     try {
+  //       await loadApplication();
+  //     } catch (e) {
+  //       console.warn(e);
+  //     } finally {
+  //       setAppIsReady(true);
+  //     }
+  //   }
+
+  //   prepare();
+  // }, []);
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (appIsReady) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [appIsReady]);
+
+  // if (!appIsReady) {
+  //   return null;
+  // }
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>

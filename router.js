@@ -16,8 +16,8 @@ import { View, TouchableOpacity, StyleSheet, Screen } from "react-native";
 const MainStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export const useRoute = (isAuth) => {
-  if (!isAuth) {
+export const useRoute = (auth) => {
+  if (!auth) {
     return (
       <MainStack.Navigator initialRouteName="Registration">
         <MainStack.Screen
@@ -82,7 +82,7 @@ export const useRoute = (isAuth) => {
               <TouchableOpacity>
                 <TouchableOpacity
                   style={{ marginLeft: 21 }}
-                  // onPress={() => navigation.navigate("PostsScreen")}
+                  onPress={() => navigation.navigate("PostsScreen")}
                 >
                   <SvgXml xml={ArrowLeft} width={25} height={25} />
                 </TouchableOpacity>
