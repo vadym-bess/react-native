@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-export const ProfileScreen = ({ navigation }) => {
+export default function ProfileScreen() {
   return (
     <View style={styles.conteiner}>
       <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
@@ -12,7 +12,7 @@ export const ProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   conteiner: {

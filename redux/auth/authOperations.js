@@ -26,7 +26,7 @@ export const authSignUpUser =
       const user = await createUserWithEmailAndPassword(auth, email, password);
 
       updateProfile(auth.currentUser, {
-        displayName: login,
+        displayName: name,
         email,
       });
 
